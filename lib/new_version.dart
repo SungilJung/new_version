@@ -110,6 +110,7 @@ class NewVersion {
       debugPrint(
           'The target platform "${Platform.operatingSystem}" is not yet supported by this package.');
     }
+    return null;
   }
 
   /// This function attempts to clean local version strings so they match the MAJOR.MINOR.PATCH
@@ -150,8 +151,10 @@ class NewVersion {
   Future<VersionStatus?> _getAndroidStoreVersion(
       PackageInfo packageInfo) async {
     final id = androidId ?? packageInfo.packageName;
-    final uri =
-        Uri.https("play.google.com", "/store/apps/details", {"id": "$id"});
+    final uri = Uri.https("play.google.com", "/store/apps/details", {
+      "id": "$id",
+      "gl": "us",
+    });
     final response = await http.get(uri);
     if (response.statusCode != 200) {
       debugPrint('Can\'t find an app in the Play Store with the id: $id');
